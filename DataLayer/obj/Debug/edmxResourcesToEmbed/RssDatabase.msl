@@ -1,0 +1,13 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+  <EntityContainerMapping StorageEntityContainer="RssDatabaseModelStoreContainer" CdmEntityContainer="RssDatabaseEntities">
+    <EntitySetMapping Name="ReadHistories">
+      <EntityTypeMapping TypeName="RssDatabaseModel.ReadHistory">
+        <MappingFragment StoreEntitySet="ReadHistory">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="ReadDate" ColumnName="ReadDate" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+  </EntityContainerMapping>
+</Mapping>

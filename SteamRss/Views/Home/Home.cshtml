@@ -1,0 +1,71 @@
+﻿@model dynamic
+
+@{
+    ViewBag.Title = string.Format("{0} Rss Feed", Model.Title ?? string.Empty);
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<a href="http://www.escapistmagazine.com/">
+    <img src="http://cdn.themis-media.com/media/global/images/library/deriv/709/709314.png" alt="logo" id="Logo" />
+</a>
+<h2>@Model.Title</h2>
+<div>
+    <input type="button" id="Refersh" onclick="location.href='@Url.Action("Home")'" value="Refresh Feed" class="btn btn-success" />
+    <br /><br />
+    <table style="margin: 0 auto;">
+        @foreach (var item in Model.Items)
+        {
+            <tr class="border">
+                <td>
+                    <div style="font-weight: bold;">@item.Title</div>
+                    <div style="font-size: 85%;">@Html.Raw(item.Content)</div>
+                <td>
+                    <input type="button" id="@item.Id"  name="Read" @Html.Raw(getReadOnlyAttribute(item.IsRead)) onclick="SetReadStatus(this);" />
+                </td>
+            </tr>
+        }
+    </table>
+    <a href="#Logo">Back to Top</a>
+</div>
+
+@functions
+{
+    string getReadOnlyAttribute(bool isReadOnly)
+    {
+        if (isReadOnly)
+        {
+            return "class=\"btn btn-info\" value=\"Mark as Unread\"";
+        }
+        return "class=\"btn btn-success\" value=\"Mark as Read\"";
+    }
+}
+
+<script type="text/javascript">
+
+    function SetReadStatus(item) {
+        CallController('Home', 'SetReadStatus', { itemId: item.id });
+        location.href = '@Url.Action("Home")';
+    }
+
+    function CallController(controller, action, data) {
+        var serviceUrl = '/' + controller + '/' + action;
+
+        $.ajax({
+            type: "POST",
+            url: serviceUrl,
+            data: JSON.stringify(data),
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            success: successFunc,
+            error: errorFunc
+        });
+
+        function successFunc() {
+            noty({ text: 'The update was successfull' });
+        }
+
+        function errorFunc() {
+            noty({ text: 'An error has occured', type: 'error' });
+        }
+    }
+</script>
